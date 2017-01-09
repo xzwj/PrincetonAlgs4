@@ -1,17 +1,36 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
+
+/******************************************************************************
+ * Programming Assignment 1: Percolation
+ * https://xzwj.github.io/Union-Find-Percolation/
+ * See assignment: 
+ *      http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+ *      http://introcs.cs.princeton.edu/java/assignments/
+ * files: 
+ *      Percolation.java
+ *      PercolationStats.java
+ * Dependencies: 
+ *      StdIn.java
+ *      StdOut.java
+ *      StdRandom.java
+ *      WeightedQuickUnionUF.java
+ *      StdStats.java
+ ******************************************************************************/
+
 public class PercolationStats {
     private double[] threshold;
-    // public PercolationStats(int n, int trials) // Ö´ÐÐ trials ´Î¶ÀÁ¢ÊµÑé£¬Íø¸ñÎª n*n
-    // public double mean() // ¼ÆËãÉøÍ¸ãÐÖµµÄÆ½¾ùÊý
-    // public double stddev() // ¼ÆËãÉøÍ¸ãÐÖµµÄ±ê×¼²î
-    // public double confidenceLo() // 95% ÖÃÐÅÇø¼äµÄ×ó¶Ë
-    // public double confidenceHi() // 95% ÖÃÐÅÇø¼äµÄÓÒ¶Ë
+//    public PercolationStats(int n, int trials)    // perform trials independent experiments on an n-by-n grid
+//    public double mean()                          // sample mean of percolation threshold
+//    public double stddev()                        // sample standard deviation of percolation threshold
+//    public double confidenceLo()                  // low  endpoint of 95% confidence interval
+//    public double confidenceHi()                  // high endpoint of 95% confidence interval
+//    public static void main(String[] args)
     public PercolationStats(int n, int trials) {
         if (n <= 0 || trials <= 0)
             throw new IllegalArgumentException();
-        threshold = new double[trials]; // ´æ·ÅÃ¿´ÎÊµÑéµÃµ½µÄÉøÍ¸ãÐÖµ
+        threshold = new double[trials]; // å­˜æ”¾æ¯æ¬¡å®žéªŒå¾—åˆ°çš„æ¸—é€é˜ˆå€¼
         for (int i = 0; i < trials; i++) {
             threshold[i] = 0;
         }

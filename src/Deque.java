@@ -1,6 +1,24 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.StdOut;
 
+/******************************************************************************
+ * Programming Assignment 2: Deques and Randomized Queues
+ * https://xzwj.github.io/Stacks-and-Queues-Deques-and-Randomized-Queues/
+ * See assignment: 
+ *      http://coursera.cs.princeton.edu/algs4/assignments/queues.html
+ *      http://introcs.cs.princeton.edu/java/assignments/
+ * files: 
+ *      Deque.java 
+ *      RandomizedQueue.java 
+ *      Permutation.java
+ * Dependencies: 
+ *      StdIn.java
+ *      StdOut.java
+ *      StdRandom.java
+ ******************************************************************************/
+
+// use double linked list
 public class Deque<Item> implements Iterable<Item> {
     // public Deque() // construct an empty deque
     // public boolean isEmpty() // is the deque empty?
@@ -20,11 +38,14 @@ public class Deque<Item> implements Iterable<Item> {
     // helper linked list class
     private static class Node<Item> {
         private Item item;
+        private Node<Item> front;
         private Node<Item> next;
     }
 
     public Deque() {
-
+        first = null;
+        last = null;
+        n = 0;
     }
 
     public boolean isEmpty() {
@@ -36,22 +57,37 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public void addFirst(Item item) {
+        if (item == null) {
+            throw new NullPointerException();
+        }
         Node<Item> oldfirst = first;
         first = new Node<Item>();
         first.item = item;
         first.next = oldfirst;
+        if (oldfirst != null) {
+            oldfirst.front = first;
+        }
+        if (last == null) {
+            last = first;
+        }
         n++;
     }
 
     public void addLast(Item item) {
+        if (item == null) {
+            throw new NullPointerException();
+        }
         Node<Item> oldlast = last;
         last = new Node<Item>();
         last.item = item;
         last.next = null;
-        if (isEmpty())
+        last.front = null;
+        if (isEmpty() || first == null)
             first = last;
-        else
+        else {
             oldlast.next = last;
+            last.front = oldlast;
+        }
         n++;
     }
 
@@ -60,6 +96,9 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NoSuchElementException("Queue underflow");
         Item item = first.item;
         first = first.next;
+        if (first != null) {
+            first.front = null;
+        }
         n--;
         if (isEmpty())
             last = null; // to avoid loitering
@@ -68,23 +107,25 @@ public class Deque<Item> implements Iterable<Item> {
 
     public Item removeLast() {
         if (isEmpty())
-            throw new NoSuchElementException("Stack underflow");
-        Item item = first.item; // save item to return
-        first = first.next; // delete first node
+            throw new NoSuchElementException("Queue underflow");
+        Item item = last.item;
+        last = last.front;
+        if (last != null) {
+            last.next = null;
+        }
         n--;
+        if (isEmpty())
+            first = null; // to avoid loitering
         return item; // return the saved item
     }
 
     public Iterator<Item> iterator() {
-        return new ListIterator<Item>(first);
+        return new ListIterator();
     }
 
-    private class ListIterator<Item> implements Iterator<Item> {
-        private Node<Item> current;
-
-        public ListIterator(Node<Item> first) {
-            current = first;
-        }
+    // an iterator, doesn't implement remove() since it's optional
+    private class ListIterator implements Iterator<Item> {
+        private Node<Item> current = first;
 
         public boolean hasNext() {
             return current != null;
@@ -108,7 +149,9 @@ public class Deque<Item> implements Iterable<Item> {
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-
+        Deque<Integer> deque = new Deque<Integer>();
+        deque.addFirst(1);
+        StdOut.println(deque.removeFirst() + "");
     }
 
 }

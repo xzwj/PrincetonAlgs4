@@ -2,16 +2,35 @@ import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+/******************************************************************************
+ * Programming Assignment 1: Percolation
+ * https://xzwj.github.io/Union-Find-Percolation/
+ * See assignment: 
+ *      http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+ *      http://introcs.cs.princeton.edu/java/assignments/
+ * files: 
+ *      Percolation.java
+ *      PercolationStats.java
+ * Dependencies: 
+ *      StdIn.java
+ *      StdOut.java
+ *      StdRandom.java
+ *      WeightedQuickUnionUF.java
+ *      StdStats.java
+ ******************************************************************************/
+
 public class Percolation {
-    // public Percolation(int n) // ´´½¨Ò»¸ö n*n µÄÍø¸ñ£¬ËùÒÔ¸ñ×Ó¶¼ÊÇ¹Ø±ÕµÄ
-    // public void open(int row, int col) // Èç¹û¸ñ×Ó (row, col) ÊÇ¹Ø±ÕµÄ£¬´ò¿ªËü
-    // public boolean isOpen(int row, int col) // ÅĞ¶Ï¸ñ×Ó (row, col) ÊÇ·ñÊÇ´ò¿ªµÄ
-    // public boolean isFull(int row, int col) // ÅĞ¶Ï¸ñ×Ó (row, col) ÊÇ·ñÓëÍø¸ñ¶¥²¿Á¬Í¨
-    // public boolean percolates() // ÅĞ¶ÏÏµÍ³ÊÇ·ñÊÇÉøÍ¸µÄ
+//    public Percolation(int n)                // create n-by-n grid, with all sites blocked
+//    public    void open(int row, int col)    // open site (row, col) if it is not open already
+//    public boolean isOpen(int row, int col)  // is site (row, col) open?
+//    public boolean isFull(int row, int col)  // is site (row, col) full?
+//    public     int numberOfOpenSites()       // number of open sites
+//    public boolean percolates()              // does the system percolate?
+//    public static void main(String[] args)   // test client (optional)
 
     private WeightedQuickUnionUF grid;
     private int side;
-    private boolean[][] isOpen; // ¼ÇÂ¼¸ñ×ÓÊÇ·ñ´ò¿ª
+    private boolean[][] isOpen; // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½
     private boolean[][] isFull;
     private int numberOfOpenSites;
 
@@ -20,7 +39,7 @@ public class Percolation {
             throw new IllegalArgumentException();
         numberOfOpenSites = 0;
         side = n;
-        grid = new WeightedQuickUnionUF(n * n + 2); // ÔÚ¶¥²¿ºÍµ×²¿¸÷¼ÓÒ»¸öĞéÄâ½Úµã
+        grid = new WeightedQuickUnionUF(n * n + 2); // ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½Íµ×²ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
         isOpen = new boolean[n + 1][n + 1];
         isFull = new boolean[n + 1][n + 1];
         for (int i = 1; i < n + 1; i++) {
@@ -40,22 +59,22 @@ public class Percolation {
         isOpen[row][col] = true;
         numberOfOpenSites++;
 
-        if (row > 1 && isOpen[row - 1][col]) { // Èç¹û¸ñ×Ó²»ÔÚµÚÒ»ÅÅ£¬ÔòÓëÉÏÃæµÄ¸ñ×ÓÁ¬Í¨
+        if (row > 1 && isOpen[row - 1][col]) { // å¦‚æœæ ¼å­ä¸åœ¨ç¬¬ä¸€æ’ï¼Œåˆ™ä¸ä¸Šé¢çš„æ ¼å­è¿é€š
             grid.union((row - 1) * side + col, (row - 2) * side + col);
         }
-        if (row < side && isOpen[row + 1][col]) { // Èç¹û¸ñ×Ó²»ÔÚ×îºóÒ»ÅÅ£¬ÔòÓëÏÂÃæµÄ¸ñ×ÓÁ¬Í¨
+        if (row < side && isOpen[row + 1][col]) { // å¦‚æœæ ¼å­ä¸åœ¨æœ€åä¸€æ’ï¼Œåˆ™ä¸ä¸‹é¢çš„æ ¼å­è¿é€š
             grid.union((row - 1) * side + col, (row) * side + col);
         }
-        if (col > 1 && isOpen[row][col - 1]) { // Èç¹û¸ñ×Ó²»ÔÚµÚÒ»ÁĞ£¬ÔòÓë×óÃæµÄ¸ñ×ÓÁ¬Í¨
+        if (col > 1 && isOpen[row][col - 1]) { // å¦‚æœæ ¼å­ä¸åœ¨ç¬¬ä¸€åˆ—ï¼Œåˆ™ä¸å·¦é¢çš„æ ¼å­è¿é€š
             grid.union((row - 1) * side + col, (row - 1) * side + col - 1);
         }
-        if (col < side && isOpen[row][col + 1]) { // Èç¹û¸ñ×Ó²»ÔÚ×îºóÒ»ÁĞ£¬ÔòÓëÓÒÃæµÄ¸ñ×ÓÁ¬Í¨
+        if (col < side && isOpen[row][col + 1]) { // å¦‚æœæ ¼å­ä¸åœ¨æœ€åä¸€åˆ—ï¼Œåˆ™ä¸å³é¢çš„æ ¼å­è¿é€š
             grid.union((row - 1) * side + col, (row - 1) * side + col + 1);
         }
-        if (row == 1) { // Èç¹û¸ñ×ÓÔÚµÚÒ»ÅÅ£¬ÔòÓë¶¥²¿ĞéÄâ½ÚµãÁ¬Í¨
+        if (row == 1) { // å¦‚æœæ ¼å­åœ¨ç¬¬ä¸€æ’ï¼Œåˆ™ä¸é¡¶éƒ¨è™šæ‹ŸèŠ‚ç‚¹è¿é€š
             grid.union((row - 1) * side + col, 0);
         }
-        if (row == side) { // Èç¹û¸ñ×ÓÔÚ×îºóÒ»ÅÅ£¬ÔòÓëµ×²¿ĞéÄâ½ÚµãÁ¬Í¨
+        if (row == side) { // å¦‚æœæ ¼å­åœ¨æœ€åä¸€æ’ï¼Œåˆ™ä¸åº•éƒ¨è™šæ‹ŸèŠ‚ç‚¹è¿é€š
             grid.union((row - 1) * side + col, side * side + 1);
         }
     }
