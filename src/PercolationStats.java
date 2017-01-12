@@ -17,6 +17,9 @@ import edu.princeton.cs.algs4.StdStats;
  *      StdRandom.java
  *      WeightedQuickUnionUF.java
  *      StdStats.java
+ * tests:
+ *      PercolationVisualizer.java
+ *      InteractivePercolationVisualizer.java
  ******************************************************************************/
 
 public class PercolationStats {
